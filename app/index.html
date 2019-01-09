@@ -14,11 +14,27 @@
 
 
     <div class="container">
-        <h2>Все стили на этой странице(кроме подсветки кода) вставлены с помощью js</h2>
+        <h2>Все стили на этой странице(кроме подсветки кода) вставлены с помощью CSSinJSON</h2>
+
+        <div class="section section_4">
+            <div class="scoped_class">
+                <div class="test">test внутри scoped_class</div>
+            </div>
+
+            <div class="scoped_class">
+                <div class="test">test внутри scoped_class</div>
+            </div>
+
+            <div class="scoped_class2">
+                <div class="test">test внутри scoped_class2</div>
+            </div>
+
+            <div class="test">test рядом со scoped_class</div>
+        </div>
 
         <div class="section section_1">
             <h3>Инициализация плагина</h3>
-            <pre class="pre_block"><code class="language-javascript">CssInJson = new CSSinJSON({
+            <pre class="pre_block"><code class="language-javascript">const CssInJson = new CSSinJSON({
     style: {object},   // Стили в виде объекта
     scoped: {boolean}, // Флаг изоляции стилей в пределах указанного элемента
     elem: {string}     // Селектор корневого элемента
@@ -39,7 +55,13 @@
             <h3 class="json_info">Исходный json стилей</h3>
             <pre class="pre_block"><code class="json_show language-json"></code></pre>
         </div>
+
+
     </div>
+
+
+
+
 
 
     <script src="./prism/prism.js"></script>

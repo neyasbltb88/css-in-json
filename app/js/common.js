@@ -45,6 +45,8 @@ window.style = {
         margin: '.5em 0',
         overflow: 'auto',
         boxShadow: '0 0 8px 0px rgba(0, 0, 0, 0.1)',
+        maxHeight: '100vh',
+        overflowY: 'auto',
     },
 
     'pre.inline': {
@@ -68,15 +70,21 @@ window.style2 = {
 
 //////////////////////////////////////
 
-CssInJson = new CSSinJSON({
+const CssInJson = new CSSinJSON({
     style: style,
-    scoped: true,
-    elem: 'body',
-    // elem: '.container',
-    // elem: '.section_2',
+    scopedElem: 'body',
+    // scopedElem: '.container',
+    // scopedElem: '.section_2',
 });
 
-
+const CssInJson2 = new CSSinJSON({
+    style: {
+        '.test': {
+            color: '#f00'
+        }
+    },
+    scopedElem: ['.scoped_class', '.scoped_class2']
+});
 
 //////////////////////////////////////
 let style_info = document.querySelector('.style_info');

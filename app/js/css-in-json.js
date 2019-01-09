@@ -4,11 +4,17 @@ import Extend from './modules/extend';
 // записанных через запятую, и вставлять перед каждый атрибут scoped
 
 class CSSinJSON {
-    constructor(options) {
-        this.elem_selector = options.elem; // Селектор элемента
-        this.elem = document.querySelector(options.elem); // Сам элемент
+    constructor(options = {}) {
+        this.elems_selector = []; // Селекторы элементов
+        this.scoped_elems = []; // Сами элементы
+        this.scoped = false; // Флаг изоляции стилей
+
+        // this.elem_selector = options.elem; // Селектор элемента
+        // this.elem = document.querySelector(options.elem); // Сам элемент
+        // this.scoped = options.scoped; // Флаг изоляции стилей
+
         this.style_obj = options.style; // Объект стилей
-        this.scoped = options.scoped; // Флаг изоляции стилей
+
 
         this.Extend = Extend; // Плагин объединения объектов
 
@@ -17,7 +23,7 @@ class CSSinJSON {
 
 
         // Точка входа
-        this.init();
+        this.init(options.scopedElem);
     }
 
     // Генератор рандомного числа
@@ -29,6 +35,27 @@ class CSSinJSON {
     // Конвертер camelCase в cebab-case
     camelToKebab(camel) {
         return camel.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    }
+
+    findScopedElems(selector) {
+        if (typeof selector === 'object') {
+            selector.forEach(element => {
+                this.elems_selector.push(element);
+                let elems_of_selector = document.querySelectorAll(element);
+                elems_of_selector.forEach(elem => {
+                    elem.dataset.scoped = this.scopedId;
+                    this.scoped_elems.push(elem);
+                })
+            });
+        } else if (typeof selector === 'string') {
+            this.elems_selector.push(selector);
+            this.scoped_elems = document.querySelectorAll(selector);
+            this.scoped_elems.forEach(elem => {
+                elem.dataset.scoped = this.scopedId;
+            })
+        }
+
+        this.scoped = (this.scoped_elems.length > 0) ? true : false;
     }
 
     // Генератор id для изоляции в диапазоне символов a-z
@@ -68,48 +95,48 @@ class CSSinJSON {
 
 
     // Генерирует строковые стили для одного селектора
-    objToStyle(selector, obj, scoped) {
-        let scoped_selector = (scoped !== '') ? `[data-scoped=${scoped}]` : '';
+    objToStyle(selector, obj) {
+        let scoped_selector = (this.scoped) ? `[data-scoped=${this.scopedId}]` : '';
         let style = '';
         for (let prop in obj) {
             style += `\n    ${this.camelToKebab(prop)}: ${obj[prop]};`
         }
 
-        if (selector === this.elem_selector) {
-            return `${selector}${scoped_selector} {${style}\n}`
-        }
+        let base_elem = false;
+        this.elems_selector.forEach(scoped_elem => {
+            if (scoped_elem === selector) {
+                base_elem = true;
+            }
+        });
 
-        return `${scoped_selector} ${selector} {${style}\n}`
+        if (base_elem) {
+            return `${selector}${scoped_selector} {${style}\n}`
+        } else {
+            return `${scoped_selector} ${selector} {${style}\n}`
+        }
     }
 
     // Генерирует полные стили по входящему объекту
-    jsonToStyle(json, scoped = '') {
+    jsonToStyle(json) {
         let style = '';
         for (let selector in json) {
-            style += this.objToStyle(selector, json[selector], scoped) + '\n\n';
+            style += this.objToStyle(selector, json[selector]) + '\n\n';
         }
 
         return style;
     }
 
 
-    init() {
-        // Если нужно, сгенерировать id для изоляции стилей
-        if (this.scoped) {
-            this.scopedId = this.scopedIdGenerate();
-            try {
-                this.elem.dataset.scoped = this.scopedId;
-            } catch (err) {
-                console.error('CSSinJSON: Указанный базовый селектор не найден!\nБудет использован тег body');
+    init(selector) {
+        this.scopedId = this.scopedIdGenerate();
 
-                this.elem_selector = 'body';
-                this.elem = document.querySelector(this.elem_selector);
-                this.elem.dataset.scoped = this.scopedId;
-            }
-        }
+        console.log('selector: ', selector);
+
+        this.findScopedElems(selector);
+
 
         // Сгенерировать строку стилей из полученного объекта
-        this.style_string = this.jsonToStyle(this.style_obj, this.scopedId);
+        this.style_string = this.jsonToStyle(this.style_obj);
 
         // Вставить сгенерированные стили на страницу
         this.styleInject(this.style_string, document.head, 'CSSinJSON_style', this.scopedId);
