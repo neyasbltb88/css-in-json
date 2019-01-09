@@ -1,1 +1,1 @@
-## Перейти к **[демо странице](https://neyasbltb88.github.io/css-in-json/build/)**
+## Перейти к **[демо странице](https://neyasbltb88.github.io/css-in-json/app/)**
