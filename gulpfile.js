@@ -122,13 +122,11 @@ gulp.task('clean', function() {
 const build_files = {
     './app/js/css-in-json.min.js': './build/js',
     './app/index.html': './build'
-
 }
 
 
 
 gulp.task('build', ['clean', 'js'], function() {
-    // gulp.src(build_files).pipe(gulp.dest('./build'))
     for (let src in build_files) {
         gulp.src(src).pipe(gulp.dest(build_files[src]))
     }
