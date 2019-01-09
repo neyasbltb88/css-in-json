@@ -9,12 +9,12 @@ var babelify = require('babelify');
 var browserSync = require('browser-sync');
 var source = require('vinyl-source-stream')
 var buffer = require('vinyl-buffer')
-var merge = require('utils-merge')
+    // var merge = require('utils-merge')
 var rename = require('gulp-rename')
 var sourcemaps = require('gulp-sourcemaps')
 var tap = require('gulp-tap')
 var del = require('del')
-    // var uglify = require('gulp-uglify')
+var uglify = require('gulp-uglify')
 
 /* --- Красивое отображение ошибок --- */
 var gutil = require('gulp-util')
@@ -65,7 +65,7 @@ function bundle_js(bundler, name) {
         .pipe(buffer())
         .pipe(rename({ suffix: '.min', prefix: '' }))
         .pipe(sourcemaps.init({ loadMaps: true })) // Захват sourcemaps из трансформации
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(sourcemaps.write('./maps'))
         .pipe(gulp.dest('./app/js'))
 
@@ -120,8 +120,8 @@ gulp.task('clean', function() {
 });
 
 const build_files = {
-    './app/js/css-in-json.min.js': './build/js',
-    './app/index.html': './build'
+    './app/js/css-in-json.min.js': './build',
+    // './app/index.html': './build'
 }
 
 
