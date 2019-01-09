@@ -145,8 +145,11 @@ let style_info = document.querySelector('.style_info');
 let CSSinJSON_style = document.querySelector('.CSSinJSON_style');
 let style_show = document.querySelector('.style_show');
 let json_show = document.querySelector('.json_show');
+let base_selector = document.querySelector('.base_selector')
 
 style_info.textContent = `В body вставлен тег <style id="${CSSinJSON_style.id} class="${CSSinJSON_style.className}"></style>`;
 style_show.textContent = CSSinJSON_style.textContent;
 
 json_show.textContent = JSON.stringify(window.style, ' ', 4);
+
+base_selector.textContent = CssInJson.elem_selector;
