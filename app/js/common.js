@@ -5,25 +5,25 @@ window.style = {
     },
 
     '.container': {
-        'margin': '0 auto',
-        'background-color': '#dedede',
-        'max-width': '800px',
-        'padding': '15px',
+        margin: '0 auto',
+        backgroundColor: '#dedede',
+        maxWidth: '800px',
+        padding: '15px',
     },
 
     'h2, h3': {
-        'text-align': 'center'
+        textAlign: 'center'
     },
 
     '.section': {
-        'border': '1px solid #000',
-        'margin-bottom': '15px',
-        'padding': '15px',
-        'border-radius': '5px',
+        border: '1px solid #000',
+        marginBottom: '15px',
+        padding: '15px',
+        borderRadius: '5px',
     },
 
     '.section:last-child': {
-        'margin-bottom': '0',
+        marginBottom: 0,
     }
 }
 

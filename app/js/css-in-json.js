@@ -26,6 +26,11 @@ class CSSinJSON {
         return rand;
     }
 
+    // Конвертер camelCase в cebab-case
+    camelToKebab(camel) {
+        return camel.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    }
+
     // Генератор id для изоляции в диапазоне символов a-z
     scopedIdGenerate() {
         let id = '';
@@ -61,12 +66,14 @@ class CSSinJSON {
         elem.appendChild(stl);
     }
 
+
+
     // Генерирует строковые стили для одного селектора
     objToStyle(selector, obj, scoped) {
         let scoped_selector = (scoped !== '') ? `[data-scoped=${scoped}]` : '';
         let style = '';
         for (let prop in obj) {
-            style += `\n    ${prop}: ${obj[prop]};`
+            style += `\n    ${this.camelToKebab(prop)}: ${obj[prop]};`
         }
 
         if (selector === this.elem_selector) {
