@@ -6,26 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>CSS in JSON</title>
+
+    <link rel="stylesheet" href="./prism/prism.css">
 </head>
 
 <body>
 
 
     <div class="container">
-        <h2>Все стили на этой странице вставлены с помощью js</h2>
-        <div class="section">
-            <h3 class="style_info"></h3>
+        <h2>Все стили на этой странице(кроме подсветки кода) вставлены с помощью js</h2>
+
+        <div class="section section_1">
+            <h3>Инициализация плагина</h3>
+            <pre class="pre_block"><code class="language-javascript">CssInJson = new CSSinJSON({
+    elem: 'body',
+    style: style,
+    scoped: true
+}); </code></pre>
+        </div>
+
+        <div class="section section_2">
+            <div class="rich_h3">
+                <h3 class="inline">В head вставлен тег: &nbsp;</h3>
+                <pre class="inline"><code class=" style_info language-markup"></code></pre>
+            </div>
             <p>Базовый селектор scoped: <b class="base_selector"></b></p>
             <p>Стили в теге:</p>
-            <pre class="style_show"></pre>
+            <pre class="pre_block"><code class="style_show language-css"></code></pre>
         </div>
-        <div class="section">
+
+        <div class="section section_3">
             <h3 class="json_info">Исходный json стилей</h3>
-            <pre class="json_show"></pre>
+            <pre class="pre_block"><code class="json_show language-json"></code></pre>
         </div>
     </div>
 
 
+    <script src="./prism/prism.js"></script>
     <script src="./js/css-in-json.min.js"></script>
     <script src="./js/common.js"></script>
 </body>
