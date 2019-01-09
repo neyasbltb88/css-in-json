@@ -19,9 +19,9 @@
         <div class="section section_1">
             <h3>Инициализация плагина</h3>
             <pre class="pre_block"><code class="language-javascript">CssInJson = new CSSinJSON({
-    elem: 'body',
-    style: style,
-    scoped: true
+    style: {object},   // Стили в виде объекта
+    scoped: {boolean}, // Флаг изоляции стилей в пределах указанного элемента
+    elem: {string}     // Селектор корневого элемента
 }); </code></pre>
         </div>
 

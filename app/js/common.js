@@ -69,11 +69,11 @@ window.style2 = {
 //////////////////////////////////////
 
 CssInJson = new CSSinJSON({
+    style: style,
+    scoped: true,
     elem: 'body',
     // elem: '.container',
     // elem: '.section_2',
-    style: style,
-    scoped: true
 });
 
 
@@ -90,4 +90,4 @@ style_show.textContent = CSSinJSON_style.textContent;
 
 json_show.textContent = JSON.stringify(window.style, ' ', 4);
 
-base_selector.textContent = CssInJson.elem_selector;
+base_selector.textContent = CssInJson.elem_selector || 'Не указан';

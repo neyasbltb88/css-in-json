@@ -67,7 +67,6 @@ class CSSinJSON {
     }
 
 
-
     // Генерирует строковые стили для одного селектора
     objToStyle(selector, obj, scoped) {
         let scoped_selector = (scoped !== '') ? `[data-scoped=${scoped}]` : '';
@@ -98,7 +97,15 @@ class CSSinJSON {
         // Если нужно, сгенерировать id для изоляции стилей
         if (this.scoped) {
             this.scopedId = this.scopedIdGenerate();
-            this.elem.dataset.scoped = this.scopedId;
+            try {
+                this.elem.dataset.scoped = this.scopedId;
+            } catch (err) {
+                console.error('CSSinJSON: Указанный базовый селектор не найден!\nБудет использован тег body');
+
+                this.elem_selector = 'body';
+                this.elem = document.querySelector(this.elem_selector);
+                this.elem.dataset.scoped = this.scopedId;
+            }
         }
 
         // Сгенерировать строку стилей из полученного объекта
