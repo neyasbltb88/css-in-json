@@ -2,16 +2,15 @@ function prepareSelector(selector) {
     return selector.replace(/([\.\#])/gmi, '\\$1');
 }
 
-String.prototype.repeat = function(n) {
-    return new Array(1 + n).join(this);
-}
-String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g, '');
-};
-
 function scopeSelector(selector, str) {
+    if (selector === prepareSelector(selector)) {
+        return {
+            input: str,
+            selector: str
+        }
+    }
     let input = str;
-    let reg_str = `(?:^|[^\\ \\t])(${prepareSelector(selector)})(?=$|[\\s\\.#>])`;
+    let reg_str = `(?:^|[^\\ \\t])(${prepareSelector(selector)})(?=$|[\\s\\.\\#>])`;
     let regex = new RegExp(reg_str, 'gm');
 
     let match, matches, str_before, str_after, lastIndex;
@@ -43,8 +42,9 @@ function scopeSelector(selector, str) {
 
 // console.log(scopeSelector(sel, str));
 
+
 function test(selector, strings, id) {
-    let browser, ul;
+    let browser, pre, code;
     try {
         if (window && document) {
             browser = true;
@@ -91,11 +91,19 @@ function test(selector, strings, id) {
         }
     }
 
-
     let tests_result = `| Tests: ${test_pass}/${test_counter} |`;
-    console.log('-'.repeat(tests_result.length));
+    let separator = '-'.repeat(tests_result.length);
+    console.log(separator);
     console.log(tests_result);
-    console.log('-'.repeat(tests_result.length));
+    console.log(separator);
+
+    if (browser) {
+        code.textContent += separator + '\n';
+        code.textContent += tests_result + '\n';
+        code.textContent += separator + '\n';
+    }
+
+
 }
 
 
@@ -114,17 +122,49 @@ let sel3 = 'test';
 
 let id = '[data-scope="qwe"]';
 
-const strings = {
+const strings1 = {
     '.test': `.test${id}`,
     '.test3.test2.test': `.test3.test2.test${id}`,
     '.test3.test.test2': `.test3.test${id}.test2`,
     '.test#test ': `.test${id}#test `,
     '#test.test ': `#test.test${id} `,
-    '#test.test': `#test.test${id}`,
     '.test > .test2': `.test${id} > .test2`,
     '.test>.test2': `.test${id}>.test2`,
     '.test .test2': `.test${id} .test2`,
     '.test  .test ': `.test${id}  .test `,
+    '.test  .test': `.test${id}  .test`,
+    '.test3  .test.test2': `.test3  .test.test2`,
+}
+
+const strings2 = {
+    '.test': `.test`,
+    '.test3.test2.test': `.test3.test2.test`,
+    '.test3.test.test2': `.test3.test.test2`,
+    '.test#test ': `.test#test${id} `,
+    '#test.test ': `#test${id}.test `,
+    '.test > .test2': `.test > .test2`,
+    '.test>.test2': `.test>.test2`,
+    '.test .test2': `.test .test2`,
+    '.test  .test ': `.test  .test `,
+    '.test  .test': `.test  .test`,
+    '.test  #test': `.test  #test`,
+    '#test  .test': `#test${id}  .test`,
+    '.test3  .test.test2': `.test3  .test.test2`,
+}
+
+const strings3 = {
+    '.test': `.test`,
+    '.test3.test2.test': `.test3.test2.test`,
+    '.test3.test.test2': `.test3.test.test2`,
+    'test#test ': `test#test `,
+    '#test.test ': `#test.test `,
+    'test > .test2': `test > .test2`,
+    'test>.test2': `test>.test2`,
+    '.test .test2': `.test .test2`,
+    'test  .test ': `test  .test `,
+    '.test  .test': `.test  .test`,
+    '.test  #test': `.test  #test`,
+    '#test  test': `#test  test`,
     '.test3  .test.test2': `.test3  .test.test2`,
 }
 
@@ -132,4 +172,6 @@ const strings = {
 // --------------------------------------
 
 
-test(sel, strings, id);
+test(sel, strings1, id);
+test(sel2, strings2, id);
+test(sel3, strings3, id);
