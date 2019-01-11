@@ -72,10 +72,14 @@ window.style2 = {
 
 const CssInJson = new CSSinJSON({
     style: style,
-    scopedElem: 'body',
+    // scopedElem: 'body',
     // scopedElem: '.container',
-    // scopedElem: '.section_2',
+    scopedElem: ['.container', 'body'],
+    // scopedElem: '.section_1',
 });
+
+
+
 
 const CssInJson2 = new CSSinJSON({
     style: {
@@ -85,6 +89,20 @@ const CssInJson2 = new CSSinJSON({
     },
     scopedElem: ['.scoped_class', '.scoped_class2']
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //////////////////////////////////////
 let style_info = document.querySelector('.style_info');
@@ -98,4 +116,11 @@ style_show.textContent = CSSinJSON_style.textContent;
 
 json_show.textContent = JSON.stringify(window.style, ' ', 4);
 
-base_selector.textContent = CssInJson.elem_selector || 'Не указан';
+let selectors = '';
+CssInJson.elems_selector.forEach(sel => {
+    selectors = (sel !== '') ? selectors += sel + ', ' : selectors;
+});
+
+selectors = selectors.slice(0, -2);
+
+base_selector.textContent = selectors || 'Не указан';

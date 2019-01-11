@@ -93,6 +93,39 @@ class CSSinJSON {
         elem.appendChild(stl);
     }
 
+    // TODO: Улучшить поиск базового селектора
+    // Метод для генерации селекторов с атрибутом scoped.
+    // Разбирает несколько селекторов, указанных через запятую
+    scopedSelectorGenerate(selector) {
+        let regex = /(,\s*\n*\t*)/gm;
+        let selector_arr = selector.split(regex).filter(selector => (selector.search(regex) === -1) ? true : false);
+        let scoped_selector = `[data-scoped=${this.scopedId}]`;
+        let new_selector = '';
+
+        // Цикл по селекторам, указанным в стилях через запятую
+        selector_arr.forEach(selector => {
+            // Если надо генерировать изолированные стили
+            if (this.scoped) {
+
+                // Цикл по каждому базовому селектору
+                this.elems_selector.forEach(scoped_elem => {
+                    // Если селектор соответствует базовому селектору scoped
+                    if (scoped_elem === selector) {
+                        new_selector += `${selector}${scoped_selector},\n`;
+                        // Если селектор НЕ соответствует базовому селектору scoped
+                    } else {
+                        new_selector += `${scoped_selector} ${selector},\n`;
+                    }
+                });
+
+                // Если НЕ надо генерировать изолированные стили
+            } else {
+                new_selector += `${selector},\n`;
+            }
+        })
+
+        return new_selector.slice(0, -2);
+    }
 
     // Генерирует строковые стили для одного селектора
     objToStyle(selector, obj) {
@@ -102,19 +135,34 @@ class CSSinJSON {
             style += `\n    ${this.camelToKebab(prop)}: ${obj[prop]};`
         }
 
-        let base_elem = false;
-        this.elems_selector.forEach(scoped_elem => {
-            if (scoped_elem === selector) {
-                base_elem = true;
-            }
-        });
+        return `${this.scopedSelectorGenerate(selector)} {${style}\n}`;
 
-        if (base_elem) {
-            return `${selector}${scoped_selector} {${style}\n}`
-        } else {
-            return `${scoped_selector} ${selector} {${style}\n}`
-        }
+
     }
+
+    // // Генерирует строковые стили для одного селектора
+    // objToStyle2(selector, obj) {
+    //     let scoped_selector = (this.scoped) ? `[data-scoped=${this.scopedId}]` : '';
+    //     let style = '';
+    //     for (let prop in obj) {
+    //         style += `\n    ${this.camelToKebab(prop)}: ${obj[prop]};`
+    //     }
+
+    //     let base_elem = false;
+    //     this.elems_selector.forEach(scoped_elem => {
+    //         if (scoped_elem === selector) {
+    //             base_elem = true;
+    //         }
+    //     });
+
+    //     if (base_elem) {
+    //         return `${selector}${scoped_selector} {${style}\n}`
+    //     } else {
+    //         return `${scoped_selector} ${selector} {${style}\n}`
+    //     }
+
+
+    // }
 
     // Генерирует полные стили по входящему объекту
     jsonToStyle(json) {
