@@ -168,6 +168,29 @@ const strings3 = {
     '.test3  .test.test2': `.test3  .test.test2`,
 }
 
+const strings4 = {
+    '.test': `.test`,
+    '.test3.test2.test': `.test3.test2.test`,
+    '.test3.test.test2': `.test3.test.test2`,
+    'test#test ': `test#test `,
+    '#test.test ': `#test.test `,
+    'test > .test2': `test > .test2`,
+    'test>.test2': `test>.test2`,
+    '.test .test2': `.test .test2`,
+    'test  .test ': `test  .test `,
+    '.test  .test': `.test  .test`,
+    '.test  #test': `.test  #test`,
+    '#test  test': `#test  test`,
+    '.test3  .test.test2': `.test3  .test.test2`,
+    '.test.test1': `.test.test1${id}`,
+    '.test.test1.test2': `.test.test1${id}.test2`,
+    '.test.test1 .test2': `.test.test1${id} .test2`,
+    '.test0.test.test1 .test2': `.test0.test.test1${id} .test2`,
+    '.test0 .test.test1 .test2': `.test0 .test.test1 .test2`,
+}
+
+let sel4 = '.test.test1';
+
 // console.log(strings);
 // --------------------------------------
 
@@ -175,3 +198,4 @@ const strings3 = {
 test(sel, strings1, id);
 test(sel2, strings2, id);
 test(sel3, strings3, id);
+test(sel4, strings4, id);
